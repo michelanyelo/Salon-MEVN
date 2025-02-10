@@ -1,18 +1,14 @@
 import express from 'express'
+import servicesRoutes from "./routes/servicesRoutes.js";
 
 // Configurar la app
 const app = express()
 
 // Definir una ruta
-app.get('/', (req, res) => {
-    const product = {
-        id: 1, price: 30, name: 'Laptop'
-    }
-    res.send(product)
-})
+app.use('/api/services', servicesRoutes)
 
 // Definir un puerto
-const PORT = 4000 || process.env.PORT
+const PORT = 5000 || process.env.PORT
 
 // Arrancar la app
 app.listen(PORT, () => {
