@@ -1,11 +1,9 @@
 import express from "express";
-import {services} from "../data/beautyServices.js";
+import {getServices} from "../controllers/serviceController.js";
 
 const router = express.Router()
 
 // ruta controlador
-router.get('/', (req, res) => {
-    res.json(services)
-})
+router.get('/', getServices)
 
 export default router
