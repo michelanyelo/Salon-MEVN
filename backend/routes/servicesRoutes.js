@@ -10,10 +10,13 @@ import {
 const router = express.Router()
 
 // ruta controlador
-router.get('/', getServices)
-router.post('/', createService)
-router.get('/:id', getService)
-router.put('/:id', updateService)
-router.delete('/:id', deleteService)
+router.route('/')
+    .post(createService)
+    .get(getServices)
+
+router.route('/:id')
+    .get(getService)
+    .put(updateService)
+    .delete(deleteService)
 
 export default router
