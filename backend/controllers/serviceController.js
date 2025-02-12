@@ -3,8 +3,13 @@ import Service from "../models/Service.js";
 import mongoose, {isValidObjectId} from "mongoose";
 import {handleNotFoundError, validateObjectId} from "../utils/index.js";
 
-const getServices = (req, res) => {
-    res.json(services)
+const getServices = async (req, res) => {
+    try {
+        const services = await Service.find()
+        res.json(services)
+    } catch (e) {
+        console.error(e)
+    }
 }
 
 const getService = async (req, res) => {
