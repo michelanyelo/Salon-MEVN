@@ -1,19 +1,27 @@
 import {services} from "../data/beautyServices.js";
 import Service from "../models/Service.js";
-import {findServiceById, hasExistences, validateObjectId} from "../utils/index.js";
+import mongoose, {isValidObjectId} from "mongoose";
+import {handleNotFoundError, validateObjectId} from "../utils/index.js";
 
 const getServices = (req, res) => {
     res.json(services)
 }
 
 const getService = async (req, res) => {
-    const {id} = req.params;
+    const {id} = req.params
+    // validar un object id
+    if (validateObjectId(id, res)) return
 
-    const service = await findServiceById(id, res)
-    if (!service) return;
+    //  validar que exista
+    const service = await Service.findById(id)
+    if (!service) {
+        return handleNotFoundError('El servicio no existe', res)
+    }
 
-    res.json(service);
-};
+
+    //  mostrar el servicio
+    res.json(service)
+}
 
 const createService = async (req, res) => {
     const body = req.body
@@ -38,9 +46,14 @@ const createService = async (req, res) => {
 
 const updateService = async (req, res) => {
     const {id} = req.params
+    // validar un object id
+    if (validateObjectId(id, res)) return
 
-    const service = await findServiceById(id, res)
-    if (!service) return
+    //  validar que exista
+    const service = await Service.findById(id)
+    if (!service) {
+        return handleNotFoundError('El servicio no existe', res)
+    }
 
     // Reescribir objeto
     service.name = req.body.name || service.name

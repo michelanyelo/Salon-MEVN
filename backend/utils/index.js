@@ -1,32 +1,24 @@
 import mongoose from "mongoose";
-import Service from "../models/Service.js";
 
 function validateObjectId(id, res) {
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({msg: 'El id no es válido'}) && false;
+        const error = new Error('El id no es válido')
+
+        return res.status(400).json({
+            msg: error.message
+        })
     }
-    return true;
 }
 
+function handleNotFoundError(message, res){
+    const error = new Error(message)
 
-async function hasExistences(id, res) {
-    const service = await Service.findById(id);
-    if (!service) {
-        return res.status(404).json({msg: "El servicio no existe"}) && false;
-    }
-    return service;
+    return res.status(404).json({
+        msg: error.message
+    })
 }
 
-const findServiceById = async (id, res) => {
-    if (!validateObjectId(id, res)) return null;
-
-    const service = await hasExistences(id, res);
-    if (!service) return null;
-
-    return service;
-};
-
-
-export {
-    validateObjectId, hasExistences, findServiceById
+export  {
+    validateObjectId,
+    handleNotFoundError
 }
