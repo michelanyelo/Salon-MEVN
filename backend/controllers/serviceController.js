@@ -53,6 +53,41 @@ const createService = async (req, res) => {
     }
 }
 
+const updateService = async (req, res) => {
+    const {id} = req.params
+    // validar un object id
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        const error = new Error('El id no es válido')
+
+        return res.status(400).json({
+            msg: error.message
+        })
+    }
+
+    //  validar que exista
+    const service = await Service.findById(id)
+    if (!service) {
+        const error = new Error('El servicio no existe')
+
+        return res.status(404).json({
+            msg: error.message
+        })
+    }
+
+    // Reescribir objeto
+    service.name = req.body.name || service.name
+    service.price = req.body.price || service.price
+
+    try{
+        await  service.save()
+        res.json({
+            msg: 'El servicio se actualizó correctamente'
+        })
+    }catch (e) {
+        console.error(e)
+    }
+}
+
 export {
-    getServices, getService, createService
+    getServices, getService, createService, updateService
 }

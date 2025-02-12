@@ -1,5 +1,5 @@
 import express from "express";
-import {getServices, getService, createService} from "../controllers/serviceController.js";
+import {getServices, getService, createService, updateService} from "../controllers/serviceController.js";
 
 const router = express.Router()
 
@@ -7,5 +7,6 @@ const router = express.Router()
 router.get('/', getServices)
 router.post('/', createService)
 router.get('/:id', getService)
+router.put('/:id', updateService)
 
 export default router
