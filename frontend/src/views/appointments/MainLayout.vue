@@ -2,12 +2,12 @@
 <template>
   <div class="flex justify-between bg-white px-6 py-4 rounded-md">
     <!-- Título principal -->
-    <h1 class="text-2xl lg:text-6xl font-black">Dale tu corte</h1>
+    <h1 class="text-2xl lg:text-6xl font-black uppercase">Dale tu corte</h1>
 
     <!-- Sección de usuario -->
     <div class="flex flex-col space-y-5">
       <div class="flex gap-2 items-center justify-end">
-        <p class="text-black text-right">Hola: usuario</p>
+        <p class=" text-right">Hola: usuario</p>
         <button
           type="button"
           class="bg-red-600 hover:bg-red-700 p-2 text-white uppercase text-xs font-bold rounded-lg transition duration-300 hover:cursor-pointer"
