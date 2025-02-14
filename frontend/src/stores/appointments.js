@@ -15,14 +15,6 @@ export const useAppointmentStore = defineStore('appointments', () => {
     }
   })
 
-  const formattedDate = computed(() => {
-    return new Intl.DateTimeFormat('es-CL', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    }).format(date.value)
-  })
-
   function onServiceSelected(selected, flash) {
     if (services.value.some((selectedService) => selectedService._id === selected._id)) {
       services.value = services.value.filter(
@@ -37,6 +29,17 @@ export const useAppointmentStore = defineStore('appointments', () => {
     }
   }
 
+  function createAppointment() {
+    const appointment = {
+      services: services.value.map(service => service._id),
+      date: formattedDate.value,
+      time: time.value,
+      totalAmount: totalAmount.value
+    }
+
+    console.log(appointment);
+  }
+
   const isServiceSelected = computed(() => {
     return (id) => services.value.some((service) => service._id === id)
   })
@@ -45,6 +48,14 @@ export const useAppointmentStore = defineStore('appointments', () => {
 
   const totalAmount = computed(() => {
     return services.value.reduce((total, service) => total + service.price, 0)
+  })
+
+  const formattedDate = computed(() => {
+    return new Intl.DateTimeFormat('es-CL', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    }).format(date.value)
   })
 
   const isValidReservation = computed(() => {
@@ -64,6 +75,7 @@ export const useAppointmentStore = defineStore('appointments', () => {
   return {
     services,
     onServiceSelected,
+    createAppointment,
     isServiceSelected,
     noServicesSelected,
     totalAmount,
