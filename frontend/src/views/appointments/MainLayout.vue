@@ -7,7 +7,7 @@
     <!-- Sección de usuario -->
     <div class="flex flex-col space-y-5">
       <div class="flex gap-2 items-center justify-end">
-        <p class=" text-right">Hola: usuario</p>
+        <p class=" text-right text-base">Hola: usuario</p>
         <button
           type="button"
           class="bg-red-600 hover:bg-red-700 p-2 text-white uppercase text-xs font-bold rounded-lg transition duration-300 hover:cursor-pointer"

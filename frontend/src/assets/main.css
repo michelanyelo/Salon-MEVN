@@ -1,15 +1,11 @@
 @import "tailwindcss";
 
 @theme{
-    --color-black: oklch(32.05% 0.0413 246.65);
+    --color-base: oklch(32.05% 0.0413 246.65);
 }
 
 @layer {
     h1, h2, h3, h4, h5, h6 {
-        color: var(--color-black);
-    }
-
-    p{
-        color: var(--color-black);
+        color: var(--color-base);
     }
 }
