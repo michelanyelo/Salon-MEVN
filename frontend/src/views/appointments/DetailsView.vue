@@ -40,7 +40,33 @@ const appointments = useAppointmentStore()
         <h4 class="text-lg font-semibold text-gray-700 my-4">2. Disponibilidad</h4>
         <div class="lg:flex gap-5 items-start">
           <div class="w-full lg:w-120 bg-white flex justify-center rounded-lg">
-            <el-calendar v-model="value" />
+            <el-calendar v-model="appointments.date"></el-calendar>
+          </div>
+
+          <div class="flex-1 grid grid-cols-1 xl:grid-cols-2 gap-5 mt-10 lg:mt-0">
+            <!-- Botones de horas -->
+            <button
+              type="button"
+              v-for="hour in appointments.hours"
+              :key="hour"
+              class="rounded-sm py-2 px-6 focus:outline-none font-semibold hover:cursor-pointer transition-all duration-300 border-2 text-center"
+              :class="
+                appointments.time === hour
+                  ? 'bg-emerald-500 border-emerald-500 text-white'
+                  : 'bg-gray-50 border-transparent text-emerald-500 hover:border-emerald-500 hover:bg-emerald-50'
+              "
+              @click="appointments.time = hour"
+            >
+              {{ hour }}
+            </button>
+
+            <!-- Botón Reservar -->
+              <button
+                class="lg:mt-4 col-span-full bg-emerald-600 p-3 rounded-lg uppercase font-semibold text-white w-full hover:cursor-pointer hover:bg-emerald-700 transition duration-300"
+                v-if="appointments.isValidReservation"
+              >
+                Reservar
+              </button>
           </div>
         </div>
       </div>
