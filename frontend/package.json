@@ -11,10 +11,12 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@primevue/icons": "^4.2.5",
+    "@primevue/themes": "^4.2.5",
     "axios": "^1.7.9",
     "dayjs": "^1.11.13",
-    "element-plus": "^2.9.4",
     "pinia": "^2.3.1",
+    "primevue": "^4.2.5",
     "sweetalert2": "^11.16.0",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
