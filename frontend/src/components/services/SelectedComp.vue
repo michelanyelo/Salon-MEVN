@@ -15,11 +15,7 @@ defineProps({
   >
     <div>
       <p class="text-lg font-semibold text-gray-800">{{ service.name }}</p>
-      <p class="text-xl font-bold text-green-600">{{ formatCurrency(service.price) }}</p>
-      <div class="mt-2 pt-1 border-t border-gray-200 text-sm text-gray-600 font-semibold">
-        <p >Viernes, 14 de febrero de 2025</p>
-        <p >18:30 hrs</p>
-      </div>
+      <p class="text-lg font-semibold text-green-600">{{ formatCurrency(service.price) }}</p>
     </div>
 
     <button
