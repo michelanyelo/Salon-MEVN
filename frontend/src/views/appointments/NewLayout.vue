@@ -24,10 +24,13 @@ const route = useRoute()
           ? 'bg-emerald-500 text-white hover:bg-emerald-600'
           : 'bg-white text-emerald-600 border-emerald-600 border-1'
       "
-      >Agenda
+      >Reservas
     </RouterLink>
   </nav>
-  <RouterView />
+
+  <div class="space-y-8">
+    <RouterView />
+  </div>
 </template>
 
 <style scoped></style>
