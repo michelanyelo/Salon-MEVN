@@ -11,10 +11,10 @@ const register = async (req, res) => {
     }
 
     // Evitar registros duplicados
-    const {email} = req.body
+    const {email, password} = req.body
     const userExist = await User.findOne({email})
 
-    if (userExist){
+    if (userExist) {
         const error = new Error('Usuario duplicado')
 
         return res.status(400).json({
@@ -23,6 +23,14 @@ const register = async (req, res) => {
     }
 
     // Validar la extensión del password
+    const MIN_PASSWORD_LENGTH = 8
+    if (password.trim().length < MIN_PASSWORD_LENGTH) {
+        const error = new Error(`La contraseña debe contener al menos ${MIN_PASSWORD_LENGTH} caracteres`)
+
+        return res.status(400).json({
+            msg: error.message
+        })
+    }
 
     try {
         const user = new User(req.body)
