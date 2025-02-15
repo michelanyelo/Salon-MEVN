@@ -20,7 +20,7 @@ const userSchema = mongoose.Schema({
     },
     token: {
         type: String,
-        default: () => randomId
+        default: () => randomId()
     },
     verified: {
         type: Boolean,

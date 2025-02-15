@@ -4,6 +4,7 @@ import colors from 'colors'
 import cors from 'cors'
 import servicesRoutes from "./routes/servicesRoutes.js";
 import {db} from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js";
 
 // Variables de entorno
 dotenv.config()
@@ -21,7 +22,7 @@ await db()
 const whiteList = [process.env.FRONTEND_URL]
 const corsOptions = {
     origin: function (origin, callback) {
-        if (whiteList.includes(origin)) {
+        if (!origin || whiteList.includes(origin)) {
             // permitir conexión
             callback(null, true)
         } else {
@@ -34,6 +35,7 @@ app.use(cors(corsOptions))
 
 // Definir una ruta
 app.use('/api/services', servicesRoutes)
+app.use('/api/auth', authRoutes)
 
 // Definir un puerto
 const PORT = process.env.PORT || 3001
