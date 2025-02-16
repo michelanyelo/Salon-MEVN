@@ -70,7 +70,29 @@ const verifyAccount = async (req, res) => {
     }
 }
 
+const login = async (req, res) => {
+    const {email, password} = req.body
+    const user = await User.findOne({email})
+    if (!user) {
+        const error = new Error('El usuario no existe')
+        return res.status(401).json({msg: error.message})
+    }
+
+    if (!user.verified) {
+        const error = new Error('Tu cuenta aún no ha sido confirmada')
+        return res.status(401).json({msg: error.message})
+    }
+
+    if (await user.checkPassword(password)) {
+        res.json({msg: 'Usuario autenticado correctamente'})
+    } else {
+        const error = new Error('El password es incorrecto')
+        return res.status(401).json({msg: error.message})
+    }
+}
+
 export {
     register,
-    verifyAccount
+    verifyAccount,
+    login
 }
