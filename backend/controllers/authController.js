@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import {sendEmailVerification} from "../emails/authService.js";
 
 const register = async (req, res) => {
     // Validar todos los campos
@@ -34,7 +35,14 @@ const register = async (req, res) => {
 
     try {
         const user = new User(req.body)
-        await user.save()
+        const result = await user.save()
+        const {name, email, token} = result
+
+        sendEmailVerification({
+            name,
+            email,
+            token
+        })
 
         res.json({
             msg: 'El usuario ha sido registrado exitosamente. Por favor, confirme su correo electrónico'
@@ -44,6 +52,25 @@ const register = async (req, res) => {
     }
 }
 
+const verifyAccount = async (req, res) => {
+    const {token} = req.params
+    const user = await User.findOne({token})
+    if (!user) {
+        const error = new Error('Hubo un error, token inválido')
+        return res.status(401).json({msg: error.message})
+    }
+
+    try {
+        user.verified = true
+        user.token = ''
+        await user.save()
+        res.json({msg: 'Usuario verificado correctamente'})
+    } catch (e) {
+        console.error(e)
+    }
+}
+
 export {
-    register
+    register,
+    verifyAccount
 }
