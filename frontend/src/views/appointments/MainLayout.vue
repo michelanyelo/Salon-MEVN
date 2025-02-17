@@ -34,7 +34,7 @@
   </div>
 
   <!-- Contenido principal -->
-  <main class="bg-white min-h-screen text-black px-6 py-8 rounded-md">
+  <main class="bg-white min-h-screen text-black px-6 py-8 rounded-md ">
     <RouterView />
   </main>
 </template>

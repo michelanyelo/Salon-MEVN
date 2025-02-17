@@ -6,11 +6,9 @@ const authRoutes = [
 </script>
 
 <template>
-  <div class="mx-auto lg:w-4/5 mt-20">
-    <h1>Desde Main Layout Auth</h1>
-    <RouterView />
+  <div class="mx-auto lg:w-4/5 mt-10">
     <nav
-      class="mt-10 flex flex-col items-center space-y-5 lg:flex-row lg:justify-end lg:space-y-0 lg:gap-5"
+      class="mt-10 flex flex-col items-center space-y-5 lg:flex-row lg:justify-end lg:space-y-0 lg:gap-3"
     >
       <RouterLink
         v-for="route in authRoutes"
@@ -26,5 +24,6 @@ const authRoutes = [
         {{ route.text }}
       </RouterLink>
     </nav>
+    <RouterView />
   </div>
 </template>

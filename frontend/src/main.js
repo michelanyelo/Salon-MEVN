@@ -3,30 +3,57 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
-
 import PrimeVue from 'primevue/config'
 import Aura from '@primevue/themes/aura'
+import { plugin, defaultConfig } from '@formkit/vue'
+import config from '../formkit.config.js'
 
 const app = createApp(App)
 
+app.use(plugin, defaultConfig(config))
+
 app.use(PrimeVue, {
-  theme:{
-    preset: Aura
+  theme: {
+    preset: Aura,
   },
   locale: {
-    dayNames: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
-    dayNamesShort: ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
-    dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+    dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+    dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
     monthNames: [
-      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio",
-      "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
-    monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
-    today: "Hoy",
-    weekHeader: "Sem",
+      'Enero',
+      'Febrero',
+      'Marzo',
+      'Abril',
+      'Mayo',
+      'Junio',
+      'Julio',
+      'Agosto',
+      'Septiembre',
+      'Octubre',
+      'Noviembre',
+      'Diciembre',
+    ],
+    monthNamesShort: [
+      'Ene',
+      'Feb',
+      'Mar',
+      'Abr',
+      'May',
+      'Jun',
+      'Jul',
+      'Ago',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dic',
+    ],
+    today: 'Hoy',
+    weekHeader: 'Sem',
     firstDayOfWeek: 0,
-    dateFormat: "mm/dd/yy"
-  }
-});
+    dateFormat: 'mm/dd/yy',
+  },
+})
 
 app.use(createPinia())
 app.use(router)
