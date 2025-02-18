@@ -1,32 +1,18 @@
 <script setup>
-import { inject } from 'vue'
 import apiAuth from '@/api/apiAuth.js'
-import { useToast } from 'primevue/usetoast'
 import { reset } from '@formkit/vue'
+import useToastNotification from '@/composable/useToast.js'
 
-// Obtener el servicio Toast
-const toast = useToast()
-
-// Inyectar la función global
-const $toastNotification = inject('toast')
+const { makeToast } = useToastNotification()
+const lifeTime = 5000
 
 const handleSubmit = async ({ password_confirm, ...formData }) => {
   try {
     const { data } = await apiAuth.register(formData)
-    $toastNotification({
-      toast,
-      severity: 'success',
-      summary: 'Registro exitoso',
-      detail: data.msg,
-    })
+    makeToast('success', 'Registro exitoso', data.msg, lifeTime)
     reset('new-account')
   } catch (error) {
-    $toastNotification({
-      toast,
-      severity: 'error',
-      summary: 'Registro inválido',
-      detail: error.response.data.msg,
-    })
+    makeToast('error', 'Error en el registro', error.response.data.msg, lifeTime)
   }
 }
 </script>

@@ -64,20 +64,6 @@ app.use(PrimeVue, {
 // Configuración del servicio Toast
 app.use(ToastService)
 
-// Función global para mostrar toasts
-const $toastNotification = (options) => {
-  const toast = options.toast
-  toast.add({
-    severity: options.severity || 'success',
-    summary: options.summary || 'Success Message',
-    detail: options.detail || 'Message Content',
-    life: options.life || 5000,
-  })
-}
-
-// Proporcionar la función global a toda la aplicación
-app.provide('toast', $toastNotification)
-
 // Configuración del enrutador
 app.use(router)
 
