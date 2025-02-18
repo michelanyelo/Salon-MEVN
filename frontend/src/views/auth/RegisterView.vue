@@ -2,6 +2,7 @@
 import { inject } from 'vue'
 import apiAuth from '@/api/apiAuth.js'
 import { useToast } from 'primevue/usetoast'
+import { reset } from '@formkit/vue'
 
 // Obtener el servicio Toast
 const toast = useToast()
@@ -18,8 +19,14 @@ const handleSubmit = async ({ password_confirm, ...formData }) => {
       summary: 'Registro exitoso',
       detail: data.msg,
     })
+    reset('new-account')
   } catch (error) {
-    console.error(error)
+    $toastNotification({
+      toast,
+      severity: 'error',
+      summary: 'Registro inválido',
+      detail: error.response.data.msg,
+    })
   }
 }
 </script>
@@ -29,7 +36,6 @@ const handleSubmit = async ({ password_confirm, ...formData }) => {
     <span class="text-emerald-500 font-bold">Dale tu Corte</span> y reserva tu cita en nuestros
     servicios
   </p>
-  <button @click="showSuccess">Mostrar éxito</button>
   <FormKit
     type="form"
     id="new-account"
