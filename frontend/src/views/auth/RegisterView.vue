@@ -18,7 +18,7 @@ const handleSubmit = async ({ password_confirm, ...formData }) => {
 </script>
 <template>
   <h1 class="text-6xl font-semibold text-center mt-10">Crea una nueva cuenta</h1>
-  <p class="text-2xl text-center my-5 mb-10">
+  <p class="text-2xl text-center my-5 mb-10 text-base">
     <span class="text-emerald-500 font-bold">Dale tu Corte</span> y reserva tu cita en nuestros
     servicios
   </p>
