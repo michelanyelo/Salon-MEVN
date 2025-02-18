@@ -1,16 +1,42 @@
-<script setup></script>
+<script setup>
+import { inject } from 'vue'
+import apiAuth from '@/api/apiAuth.js'
+import { useToast } from 'primevue/usetoast'
+
+// Obtener el servicio Toast
+const toast = useToast()
+
+// Inyectar la función global
+const $toastNotification = inject('toast')
+
+const handleSubmit = async ({ password_confirm, ...formData }) => {
+  try {
+    const { data } = await apiAuth.register(formData)
+    $toastNotification({
+      toast,
+      severity: 'success',
+      summary: 'Registro exitoso',
+      detail: data.msg,
+    })
+  } catch (error) {
+    console.error(error)
+  }
+}
+</script>
 <template>
   <h1 class="text-6xl font-semibold text-center mt-10">Crea una nueva cuenta</h1>
   <p class="text-2xl text-center my-5 mb-10">
     <span class="text-emerald-500 font-bold">Dale tu Corte</span> y reserva tu cita en nuestros
     servicios
   </p>
+  <button @click="showSuccess">Mostrar éxito</button>
   <FormKit
     type="form"
     id="new-account"
     submit-label="Crear cuenta"
     :actions="false"
     incomplete-message="No se pudo enviar, revisa las notificaciones"
+    @submit="handleSubmit"
   >
     <FormKit
       type="text"

@@ -5,13 +5,19 @@ import App from './App.vue'
 import router from './router'
 import PrimeVue from 'primevue/config'
 import Aura from '@primevue/themes/aura'
+import ToastService from 'primevue/toastservice'
 import { plugin, defaultConfig } from '@formkit/vue'
 import config from '../formkit.config.js'
 
 const app = createApp(App)
 
+// Configuración de Pinia
+app.use(createPinia())
+
+// Configuración de FormKit
 app.use(plugin, defaultConfig(config))
 
+// Configuración de PrimeVue y servicios
 app.use(PrimeVue, {
   theme: {
     preset: Aura,
@@ -55,7 +61,25 @@ app.use(PrimeVue, {
   },
 })
 
-app.use(createPinia())
+// Configuración del servicio Toast
+app.use(ToastService)
+
+// Función global para mostrar toasts
+const $toastNotification = (options) => {
+  const toast = options.toast
+  toast.add({
+    severity: options.severity || 'success',
+    summary: options.summary || 'Success Message',
+    detail: options.detail || 'Message Content',
+    life: options.life || 5000,
+  })
+}
+
+// Proporcionar la función global a toda la aplicación
+app.provide('toast', $toastNotification)
+
+// Configuración del enrutador
 app.use(router)
 
+// Montar la aplicación
 app.mount('#app')
