@@ -6,8 +6,10 @@ const { makeToast } = useToastNotification()
 
 const handleSubmit = async (formData) => {
   try {
-    const { data } = await apiAuth.login(formData)
-    console.log(data)
+    const {
+      data: { token },
+    } = await apiAuth.login(formData)
+    localStorage.setItem('AUTH_TOKEN', token)
   } catch (error) {
     makeToast('error', 'Error al autenticarse', error.response.data.msg)
   }
