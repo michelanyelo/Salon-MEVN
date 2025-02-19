@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import MainLayout from '@/views/appointments/MainLayout.vue'
+import apiAuth from '@/api/apiAuth.js'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -68,9 +69,10 @@ router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.matched.some((url) => url.meta.requiresAuth)
   if (requiresAuth) {
     try {
-    //   todo
-    } catch (error) {
-      console.error(error)
+      await apiAuth.auth()
+      next()
+    } catch {
+      next({ name: 'login' })
     }
   } else {
     next()
