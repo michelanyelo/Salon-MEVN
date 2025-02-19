@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import {sendEmailVerification} from "../emails/authService.js";
+import {generateJWT} from "../utils/index.js";
 
 const register = async (req, res) => {
     // Validar todos los campos
@@ -84,7 +85,8 @@ const login = async (req, res) => {
     }
 
     if (await user.checkPassword(password)) {
-        res.json({msg: 'Usuario autenticado correctamente'})
+        const token = generateJWT(user._id)
+        res.json({token})
     } else {
         const error = new Error('El password es incorrecto')
         return res.status(401).json({msg: error.message})
