@@ -7,7 +7,7 @@
     <!-- Sección de usuario -->
     <div class="flex flex-col space-y-5">
       <div class="flex gap-2 items-center justify-end">
-        <p class=" text-right text-base">Hola: usuario</p>
+        <p class="text-right text-base">Hola: usuario</p>
         <button
           type="button"
           class="bg-red-600 hover:bg-red-700 p-2 text-white uppercase text-xs font-bold rounded-lg transition duration-300 hover:cursor-pointer"
@@ -18,11 +18,12 @@
 
       <!-- Menú de navegación -->
       <nav class="flex gap-2 items-center justify-end">
-        <button
+        <RouterLink
+          :to="{ name: 'my-appointments' }"
           class="p-3 bg-sky-800 hover:bg-sky-900 text-white uppercase text-xs font-bold rounded-lg transition duration-300 hover:cursor-pointer"
         >
           Mis reservas
-        </button>
+        </RouterLink>
         <RouterLink
           :to="{ name: 'new-appointment' }"
           class="p-3 bg-emerald-500 hover:bg-emerald-600 text-white uppercase text-xs font-bold rounded-lg transition duration-300 inline-block"
@@ -34,7 +35,7 @@
   </div>
 
   <!-- Contenido principal -->
-  <main class="bg-white min-h-screen text-black px-6 py-8 rounded-md ">
+  <main class="bg-white min-h-screen text-black px-6 py-8 rounded-md">
     <RouterView />
   </main>
 </template>

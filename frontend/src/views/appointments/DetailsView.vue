@@ -50,8 +50,8 @@ const disablePastDates = (date) => {
               v-model="appointments.date"
               inline
               :disabled-date="disablePastDates"
-              class="block w-full"
-              :disabled-days=[0]
+              class="w-full max-w-full"
+              :disabled-days="[0]"
               :min-date="new Date()"
             />
           </div>
@@ -86,4 +86,9 @@ const disablePastDates = (date) => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+:deep(.p-datepicker) {
+  max-width: 100%;
+  overflow: hidden;
+}
+</style>

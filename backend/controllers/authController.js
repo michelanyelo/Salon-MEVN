@@ -40,9 +40,7 @@ const register = async (req, res) => {
         const {name, email, token} = result
 
         sendEmailVerification({
-            name,
-            email,
-            token
+            name, email, token
         })
 
         res.json({
@@ -93,8 +91,11 @@ const login = async (req, res) => {
     }
 }
 
+const user = async (req, res) => {
+    const {user} = req
+    res.json(user)
+}
+
 export {
-    register,
-    verifyAccount,
-    login
+    register, verifyAccount, login, user
 }

@@ -1,6 +1,9 @@
 <script setup>
 import apiAuth from '@/api/apiAuth.js'
 import useToastNotification from '@/composable/useToast.js'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const { makeToast } = useToastNotification()
 
@@ -10,6 +13,7 @@ const handleSubmit = async (formData) => {
       data: { token },
     } = await apiAuth.login(formData)
     localStorage.setItem('AUTH_TOKEN', token)
+    await router.push({name: 'my-appointments'})
   } catch (error) {
     makeToast('error', 'Error al autenticarse', error.response.data.msg)
   }
