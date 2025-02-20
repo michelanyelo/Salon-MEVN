@@ -57,18 +57,20 @@ const disablePastDates = (date) => {
           </div>
           <div
             v-show="appointments.isDateSelected"
-            class="flex-1 grid grid-cols-1 xl:grid-cols-2 gap-5 mt-10 lg:mt-0">
+            class="flex-1 grid grid-cols-1 xl:grid-cols-2 gap-5 mt-10 lg:mt-0"
+          >
             <!-- Botones de horas -->
             <button
               type="button"
               v-for="hour in appointments.hours"
               :key="hour"
-              class="rounded-sm py-2 px-6 focus:outline-none font-semibold hover:cursor-pointer transition-all duration-300 border-2 text-center"
+              class="rounded-sm py-2 px-6 focus:outline-none font-semibold hover:cursor-pointer transition-all duration-300 border-2 text-center disabled:bg-gray-900 disabled:text-gray-500 disabled:border-gray-200 disabled:cursor-not-allowed disabled:opacity-50"
               :class="
                 appointments.time === hour
                   ? 'bg-emerald-500 border-emerald-500 text-white'
                   : 'bg-gray-50 border-transparent text-emerald-500 hover:border-emerald-500 hover:bg-emerald-50'
               "
+              :disabled="appointments.disableTime(hour)"
               @click="appointments.time = hour"
             >
               {{ hour }}

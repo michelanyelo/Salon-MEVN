@@ -7,13 +7,14 @@ import useToastNotification from '@/composable/useToast.js'
 import { useUserStore } from '@/stores/user.js'
 
 export const useAppointmentStore = defineStore('appointments', () => {
+  const router = useRouter()
+  const { makeToast } = useToastNotification()
   const services = ref([])
   const date = ref()
   const hours = ref([])
   const time = ref('')
-  const { makeToast } = useToastNotification()
   const lifeTime = 5000
-  const router = useRouter()
+  const appointmentsByDate = ref([])
 
   onMounted(() => {
     const startHour = 10
@@ -24,8 +25,9 @@ export const useAppointmentStore = defineStore('appointments', () => {
   })
 
   watch(date, async () => {
+    time.value = ''
     const { data } = await AppointmentAPI.getByDate(formattedDate.value)
-    console.log(data)
+    appointmentsByDate.value = data
   })
 
   function onServiceSelected(selected, flash) {
@@ -112,6 +114,12 @@ export const useAppointmentStore = defineStore('appointments', () => {
     return !!date.value
   })
 
+  const disableTime = computed(() => {
+    return (hour) => {
+      return appointmentsByDate.value.find((singleappointment) => singleappointment.time === hour)
+    }
+  })
+
   return {
     services,
     onServiceSelected,
@@ -124,5 +132,6 @@ export const useAppointmentStore = defineStore('appointments', () => {
     time,
     isValidReservation,
     isDateSelected,
+    disableTime
   }
 })
