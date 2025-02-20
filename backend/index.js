@@ -5,6 +5,7 @@ import cors from 'cors'
 import servicesRoutes from "./routes/servicesRoutes.js";
 import {db} from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
+import appointmentRoutes from "./routes/appointmentRoutes.js";
 
 // Variables de entorno
 dotenv.config()
@@ -36,6 +37,7 @@ app.use(cors(corsOptions))
 // Definir una ruta
 app.use('/api/services', servicesRoutes)
 app.use('/api/auth', authRoutes)
+app.use('/api/appointment', appointmentRoutes)
 
 // Definir un puerto
 const PORT = process.env.PORT || 3001
