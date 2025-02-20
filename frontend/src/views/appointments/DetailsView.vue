@@ -55,7 +55,9 @@ const disablePastDates = (date) => {
               :min-date="new Date()"
             />
           </div>
-          <div class="flex-1 grid grid-cols-1 xl:grid-cols-2 gap-5 mt-10 lg:mt-0">
+          <div
+            v-show="appointments.isDateSelected"
+            class="flex-1 grid grid-cols-1 xl:grid-cols-2 gap-5 mt-10 lg:mt-0">
             <!-- Botones de horas -->
             <button
               type="button"

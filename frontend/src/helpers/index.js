@@ -1,4 +1,4 @@
-import { formatISO } from 'date-fns'
+import { parse, formatISO } from 'date-fns'
 
 export const formatCurrency = (price) => {
   return Number(price).toLocaleString('en-US', {
@@ -7,4 +7,7 @@ export const formatCurrency = (price) => {
   })
 }
 
-export const convertToISO = (strDate) => formatISO(strDate)
+export const convertToISO = (strDate) => {
+  const newDate = parse(strDate, 'dd/MM/yyyy', new Date())
+  return formatISO(newDate)
+}

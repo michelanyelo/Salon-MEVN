@@ -1,4 +1,4 @@
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { defineStore } from 'pinia'
 import AppointmentAPI from '@/api/AppointmentAPI.js'
@@ -8,7 +8,7 @@ import { useUserStore } from '@/stores/user.js'
 
 export const useAppointmentStore = defineStore('appointments', () => {
   const services = ref([])
-  const date = ref(new Date())
+  const date = ref()
   const hours = ref([])
   const time = ref('')
   const { makeToast } = useToastNotification()
@@ -21,6 +21,11 @@ export const useAppointmentStore = defineStore('appointments', () => {
     for (let hour = startHour; hour <= endHour; hour++) {
       hours.value.push(hour + ':00')
     }
+  })
+
+  watch(date, async () => {
+    const { data } = await AppointmentAPI.getByDate(formattedDate.value)
+    console.log(data)
   })
 
   function onServiceSelected(selected, flash) {
@@ -40,7 +45,7 @@ export const useAppointmentStore = defineStore('appointments', () => {
   async function createAppointment() {
     const appointment = {
       services: services.value.map((service) => service._id),
-      date: convertToISO(date.value),
+      date: convertToISO(formattedDate.value),
       time: time.value,
       totalAmount: totalAmount.value,
     }
@@ -93,6 +98,20 @@ export const useAppointmentStore = defineStore('appointments', () => {
     return hasServices && isDateValid && isTimeSelected
   })
 
+  const formattedDate = computed(() => {
+    return new Intl.DateTimeFormat('es-CL', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    })
+      .format(date.value)
+      .replace(/-/g, '/')
+  })
+
+  const isDateSelected = computed(() => {
+    return !!date.value
+  })
+
   return {
     services,
     onServiceSelected,
@@ -104,5 +123,6 @@ export const useAppointmentStore = defineStore('appointments', () => {
     hours,
     time,
     isValidReservation,
+    isDateSelected,
   }
 })
