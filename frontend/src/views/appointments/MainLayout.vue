@@ -1,7 +1,12 @@
 <script setup>
 import { useUserStore } from '@/stores/user.js'
+import { onMounted } from 'vue'
 
 const user = useUserStore()
+
+onMounted(async () => {
+  await user.fetchUser()
+})
 </script>
 
 <template>

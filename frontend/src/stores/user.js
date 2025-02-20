@@ -1,15 +1,11 @@
 import { defineStore } from 'pinia'
-import {ref, computed, onMounted} from 'vue'
+import { ref, computed } from 'vue'
 import apiAuth from '@/api/apiAuth.js'
 import { useRouter } from 'vue-router'
 
 export const useUserStore = defineStore('user', () => {
   const router = useRouter()
   const user = ref({})
-
-  onMounted(async () => {
-    await fetchUser()
-  })
 
   async function fetchUser() {
     try {
@@ -32,5 +28,6 @@ export const useUserStore = defineStore('user', () => {
     user,
     getUserName,
     logout,
+    fetchUser,
   }
 })

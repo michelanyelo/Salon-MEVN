@@ -1,11 +1,19 @@
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { defineStore } from 'pinia'
+import AppointmentAPI from '@/api/AppointmentAPI.js'
+import { convertToISO } from '@/helpers/index.js'
+import useToastNotification from '@/composable/useToast.js'
+import { useUserStore } from '@/stores/user.js'
 
 export const useAppointmentStore = defineStore('appointments', () => {
   const services = ref([])
   const date = ref(new Date())
   const hours = ref([])
   const time = ref('')
+  const { makeToast } = useToastNotification()
+  const lifeTime = 5000
+  const router = useRouter()
 
   onMounted(() => {
     const startHour = 10
@@ -29,15 +37,36 @@ export const useAppointmentStore = defineStore('appointments', () => {
     }
   }
 
-  function createAppointment() {
+  async function createAppointment() {
     const appointment = {
-      services: services.value.map(service => service._id),
-      date: formattedDate.value,
+      services: services.value.map((service) => service._id),
+      date: convertToISO(date.value),
       time: time.value,
-      totalAmount: totalAmount.value
+      totalAmount: totalAmount.value,
     }
 
-    console.log(appointment);
+    try {
+      const { data } = await AppointmentAPI.create(appointment)
+      makeToast(
+        'success',
+        'Reserva agendada',
+        `${useUserStore().getUserName}, ${data.msg}`,
+        lifeTime,
+      )
+
+      setTimeout(() => {
+        clearAppointmentData()
+        router.push({ name: 'my-appointments' })
+      }, lifeTime)
+    } catch {
+      makeToast('error', 'Error en la reserva', 'Tu reserva no se ha podido procesar', lifeTime)
+    }
+  }
+
+  function clearAppointmentData() {
+    services.value = []
+    date.value = new Date()
+    time.value = ''
   }
 
   const isServiceSelected = computed(() => {
@@ -48,14 +77,6 @@ export const useAppointmentStore = defineStore('appointments', () => {
 
   const totalAmount = computed(() => {
     return services.value.reduce((total, service) => total + service.price, 0)
-  })
-
-  const formattedDate = computed(() => {
-    return new Intl.DateTimeFormat('es-CL', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    }).format(date.value)
   })
 
   const isValidReservation = computed(() => {
@@ -82,7 +103,6 @@ export const useAppointmentStore = defineStore('appointments', () => {
     date,
     hours,
     time,
-    formattedDate,
     isValidReservation,
   }
 })
