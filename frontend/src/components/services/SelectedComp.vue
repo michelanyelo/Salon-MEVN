@@ -15,7 +15,7 @@ defineProps({
   >
     <div>
       <p class="text-lg font-semibold text-gray-800">{{ service.name }}</p>
-      <p class="text-lg font-semibold text-green-600">{{ formatCurrency(service.price) }}</p>
+      <p class="text-lg font-semibold text-emerald-500">{{ formatCurrency(service.price) }}</p>
     </div>
 
     <button

@@ -37,7 +37,7 @@ const disablePastDates = (date) => {
       </div>
       <div class="mt-6 p-4 border-t border-gray-200 flex justify-between">
         <p class="text-sm text-gray-700">Sub total servicios agregados</p>
-        <p class="font-bold text-green-600">
+        <p class="font-semibold text-emerald-500">
           {{ formatCurrency(appointments.totalAmount) }}
         </p>
       </div>
