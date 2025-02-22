@@ -13,7 +13,12 @@ export const convertToISO = (strDate) => {
   return formatISO(newDate)
 }
 
+// Mostrar fecha desde la bd hacia editar
+export const convertToDate = (isoDate) => {
+  return new Date(isoDate)
+}
+
 export const displayDate = (isoDate) => {
   const newDate = parseISO(isoDate)
-  return format(newDate, 'PPPP', {locale: es})
+  return format(newDate, 'PPPP', { locale: es })
 }

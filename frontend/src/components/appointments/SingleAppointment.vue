@@ -1,7 +1,6 @@
 <script setup>
 import { formatCurrency } from '@/helpers/index.js'
 import { displayDate } from '@/helpers/index.js'
-import SelectedComp from '@/components/services/SelectedComp.vue'
 
 defineProps({
   appointment: {
@@ -31,11 +30,12 @@ defineProps({
     </div>
 
     <div class="flex gap-2 items-center">
-      <button
+      <RouterLink
         class="bg-slate-600 hover:bg-slate-700 rounded-lg p-3 text-white text-sm uppercase font-semibold flex-1 md:flex-none hover:cursor-pointer transition duration-300"
+        :to="{ name: 'edit-appointment', params: { id: appointment._id } }"
       >
         Editar cita
-      </button>
+      </RouterLink>
       <button
         class="rounded-lg p-3 text-white text-sm uppercase font-semibold flex-1 md:flex-none hover:cursor-pointer bg-red-600 hover:bg-red-700 transition duration-300"
       >

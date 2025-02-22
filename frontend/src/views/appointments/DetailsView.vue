@@ -79,7 +79,7 @@ const disablePastDates = (date) => {
             <button
               class="lg:mt-4 col-span-full bg-emerald-600 p-3 rounded-lg uppercase font-semibold text-white w-full hover:cursor-pointer hover:bg-emerald-700 transition duration-300"
               v-if="appointments.isValidReservation"
-              @click="appointments.createAppointment"
+              @click="appointments.saveAppointment"
             >
               Reservar
             </button>

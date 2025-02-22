@@ -38,6 +38,22 @@ const router = createRouter({
             },
           ],
         },
+        {
+          path: ':id/editar',
+          component: () => import('@/views/appointments/EditLayout.vue'),
+          children: [
+            {
+              path: '',
+              name: 'edit-appointment',
+              component: () => import('@/views/appointments/ServicesView.vue'),
+            },
+            {
+              path: 'detalles',
+              name: 'edit-appointment-details',
+              component: () => import('@/views/appointments/DetailsView.vue'),
+            },
+          ],
+        },
       ],
     },
     {
