@@ -2,7 +2,9 @@
 import SelectedComp from '@/components/services/SelectedComp.vue'
 import { useAppointmentStore } from '@/stores/appointments.js'
 import { formatCurrency } from '@/helpers/index.js'
-import DatePicker from 'primevue/datepicker'
+
+import VueDatePicker from '@vuepic/vue-datepicker'
+import '@vuepic/vue-datepicker/dist/main.css'
 
 const appointments = useAppointmentStore()
 
@@ -46,13 +48,22 @@ const disablePastDates = (date) => {
         <div class="lg:flex gap-5 items-start">
           <!-- DatePicker -->
           <div class="w-full lg:w-120 bg-white flex justify-center rounded-lg">
-            <DatePicker
+            <!--            <DatePicker-->
+            <!--              v-model="appointments.date"-->
+            <!--              inline-->
+            <!--              :disabled-date="disablePastDates"-->
+            <!--              class="w-full max-w-full"-->
+            <!--              :disabled-days="[0]"-->
+            <!--              :min-date="new Date()"-->
+            <!--            />-->
+
+            <VueDatePicker
               v-model="appointments.date"
               inline
-              :disabled-date="disablePastDates"
-              class="w-full max-w-full"
-              :disabled-days="[0]"
+              auto-apply
+              locale="es"
               :min-date="new Date()"
+              :disabled-week-days="[0]"
             />
           </div>
           <div
@@ -91,8 +102,14 @@ const disablePastDates = (date) => {
 </template>
 
 <style scoped>
-:deep(.p-datepicker) {
-  max-width: 100%;
-  overflow: hidden;
+:deep(.dp__active_date) {
+  background-color: #42b883 !important;
+  color: white !important;
+  border-color: #42b883 !important;
 }
+
+:deep(.dp__main) {
+  display: block;
+}
+
 </style>

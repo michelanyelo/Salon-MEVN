@@ -73,7 +73,7 @@ export async function sendEmailCancelAppointment({date, time, email, name, servi
         html: `
             <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto;">
                 <h2 style="color: #4A90E2;">¡Hola Admin!</h2>
-                <p>El desgraciado de <strong>${name}</strong> ha cancelado la cita para el día <strong>${date}</strong> a las <strong>${time}</strong>.</p>
+                <p>El/la desgraciado/a de <strong>${name}</strong> ha cancelado la cita para el día <strong>${date}</strong> a las <strong>${time}</strong>.</p>
                 <p>Correo: ${email}</p>
                 <p>Servicios:</p>
                 <ul>
