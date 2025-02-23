@@ -3,8 +3,8 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
-// import PrimeVue from 'primevue/config'
-// import Aura from '@primevue/themes/aura'
+import PrimeVue from 'primevue/config'
+import Aura from '@primevue/themes/aura'
 import ToastService from 'primevue/toastservice'
 import { plugin, defaultConfig } from '@formkit/vue'
 import config from '../formkit.config.js'
@@ -18,6 +18,12 @@ app.use(createPinia())
 app.use(plugin, defaultConfig(config))
 
 // Configuración de PrimeVue y servicios
+app.use(PrimeVue, {
+  theme: {
+    preset: Aura,
+  },
+})
+
 // app.use(PrimeVue, {
 //   theme: {
 //     preset: Aura,
