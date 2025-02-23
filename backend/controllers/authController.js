@@ -109,20 +109,56 @@ const forgotPassword = async (req, res) => {
         res.json({msg: 'Se ha enviado un correo electrónico para restablecer la contraseña'})
 
         await sendEmailPasswordReset({
-            name: result.name,
-            email: result.email,
-            token: result.token
+            name: result.name, email: result.email, token: result.token
         })
 
     } catch (error) {
         console.error(error)
     }
 }
+
+const verifyUpdatePasswordReset = async (req, res) => {
+    const {token} = req.params
+    const user = await User.findOne({token})
+    if (!user) {
+        const error = new Error('Hubo un error, token inválido')
+        return res.status(401).json({msg: error.message})
+    }
+
+    try {
+        user.verified = true
+        await user.save()
+        res.json({msg: 'Usuario verificado correctamente'})
+    } catch (e) {
+        console.error(e)
+    }
+}
+
+const updatePassword = async (req, res) => {
+    const {token} = req.params
+    const user = await User.findOne({token})
+    if (!user) {
+        const error = new Error('Hubo un error, token inválido')
+        return res.status(401).json({msg: error.message})
+    }
+
+    const {password} = req.body
+
+    try {
+        user.password = password
+        user.token = ''
+        await user.save()
+        res.json({msg: 'Contraseña actualizada correctamente'})
+    } catch (e) {
+        console.error(e)
+    }
+}
+
 const user = async (req, res) => {
     const {user} = req
     res.json(user)
 }
 
 export {
-    register, verifyAccount, login, forgotPassword, user
+    register, verifyAccount, login, forgotPassword, verifyUpdatePasswordReset, updatePassword, user
 }
