@@ -1,6 +1,11 @@
 import Appointment from "../models/Appointment.js";
 import {parse, formatISO, startOfDay, endOfDay, isValid} from "date-fns";
-import {handleNotFoundError, validateObjectId} from "../utils/index.js";
+import {formatDate, handleNotFoundError, validateObjectId} from "../utils/index.js";
+import {
+    sendEmailCancelAppointment,
+    sendEmailNewAppointment,
+    sendEmailUpdateAppointment
+} from "../emails/appointmentEmailService.js";
 
 const createAppointment = async (req, res) => {
 
@@ -9,10 +14,12 @@ const createAppointment = async (req, res) => {
 
     try {
         const newAppointment = new Appointment(appointment)
-        await newAppointment.save()
+        const result = await newAppointment.save()
         res.json({
             msg: 'tu reserva fue procesada exitosamente'
         })
+
+        await sendEmailNewAppointment({date: formatDate(result.date), time: result.time})
     } catch (error) {
         console.error(error)
     }
@@ -89,11 +96,13 @@ const updateAppointment = async (req, res) => {
     appointment.services = services
 
     try {
-        await appointment.save()
+        const result = await appointment.save()
 
         res.json({
             msg: 'tu cita se ha actualizado correctamente'
         })
+
+        await sendEmailUpdateAppointment({date: formatDate(result.date), time: result.time})
     } catch (error) {
         console.error(error)
     }
@@ -116,8 +125,17 @@ const deleteAppointment = async (req, res) => {
     }
 
     try {
-        await appointment.deleteOne()
+        const result = await appointment.deleteOne()
         res.json({msg: 'su cita ha sido removida'})
+
+        // Enviar email
+        await sendEmailCancelAppointment({
+            date: formatDate(appointment.date),
+            time: appointment.time,
+            email: req.user.email,
+            name: req.user.name,
+            services: appointment.services
+        })
     } catch (error) {
         console.error(error)
     }

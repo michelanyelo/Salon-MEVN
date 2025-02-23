@@ -12,7 +12,7 @@ export const useAppointmentStore = defineStore('appointments', () => {
   const { makeToast } = useToastNotification() // Hook para mostrar notificaciones
   const userStore = useUserStore()
   const services = ref([]) // Servicios seleccionados por el usuario
-  const date = ref() // Fecha seleccionada
+  const date = ref(new Date()) // Fecha seleccionada
   const hours = ref([]) // Horas disponibles para reservar
   const time = ref('') // Hora seleccionada
   const lifeTime = 4000 // Duración de las notificaciones en milisegundos
@@ -46,7 +46,7 @@ export const useAppointmentStore = defineStore('appointments', () => {
         if (matchingAppointment) {
           time.value = matchingAppointment.time
         } else {
-          console.warn('No se encontró ninguna cita coincidente para el ID dado.')
+          time.value = '' // Si no hay coincidencias, reinicia la hora seleccionada
         }
       } else {
         // Si no hay un ID de cita específico, establece todas las citas disponibles
