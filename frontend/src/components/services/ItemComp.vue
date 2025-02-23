@@ -1,17 +1,15 @@
 <script setup>
 import { formatCurrency } from '@/helpers/index.js'
 import { useAppointmentStore } from '@/stores/appointments.js'
-import { useFlash } from '@/composable/useSwal.js'
 
 const appointments = useAppointmentStore()
-const { flash } = useFlash() // Obtener flash
 
 const props = defineProps({
   service: Object,
 })
 
 const serviceSelected = () => {
-  appointments.onServiceSelected(props.service, flash)
+  appointments.onServiceSelected(props.service)
 }
 </script>
 

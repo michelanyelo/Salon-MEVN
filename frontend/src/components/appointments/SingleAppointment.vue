@@ -1,6 +1,9 @@
 <script setup>
 import { formatCurrency } from '@/helpers/index.js'
 import { displayDate } from '@/helpers/index.js'
+import {useAppointmentStore} from "@/stores/appointments.js";
+
+const appointmentStore = useAppointmentStore()
 
 defineProps({
   appointment: {
@@ -38,6 +41,7 @@ defineProps({
       </RouterLink>
       <button
         class="rounded-lg p-3 text-white text-sm uppercase font-semibold flex-1 md:flex-none hover:cursor-pointer bg-red-600 hover:bg-red-700 transition duration-300"
+        @click="appointmentStore.deleteAppointment(appointment._id)"
       >
         Eliminar cita
       </button>

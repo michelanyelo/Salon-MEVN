@@ -1,6 +1,6 @@
 import express from "express";
 import {
-    createAppointment, getAppointmentById, getAppointmentsByDate, updateAppointment
+    createAppointment, deleteAppointment, getAppointmentById, getAppointmentsByDate, updateAppointment
 } from "../controllers/appointmentController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 
@@ -13,5 +13,6 @@ router.route('/')
 router.route('/:id')
     .get(authMiddleware, getAppointmentById)
     .put(authMiddleware, updateAppointment)
+    .delete(authMiddleware, deleteAppointment)
 
 export default router

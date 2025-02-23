@@ -5,10 +5,12 @@ import AppointmentAPI from '@/api/AppointmentAPI.js' // Importa la API para mane
 import { convertToDate, convertToISO } from '@/helpers/index.js' // Funciones auxiliares para fechas
 import useToastNotification from '@/composable/useToast.js' // Notificaciones toast
 import { useUserStore } from '@/stores/user.js' // Store del usuario
+import { useSweetAlert } from '@/composable/useSwal'
 
 export const useAppointmentStore = defineStore('appointments', () => {
   const router = useRouter() // Hook para manejar la navegación
   const { makeToast } = useToastNotification() // Hook para mostrar notificaciones
+  const userStore = useUserStore()
   const services = ref([]) // Servicios seleccionados por el usuario
   const date = ref() // Fecha seleccionada
   const hours = ref([]) // Horas disponibles para reservar
@@ -56,7 +58,7 @@ export const useAppointmentStore = defineStore('appointments', () => {
   })
 
   // Función para manejar la selección/deselección de servicios
-  function onServiceSelected(selected, flash) {
+  async function onServiceSelected(selected) {
     if (services.value.some((selectedService) => selectedService._id === selected._id)) {
       // Si el servicio ya está seleccionado, lo elimina
       services.value = services.value.filter(
@@ -65,7 +67,8 @@ export const useAppointmentStore = defineStore('appointments', () => {
     } else {
       // Si no está seleccionado, lo agrega (máximo 2 servicios)
       if (services.value.length >= 2) {
-        flash('Máximo 2 reservas por agenda', 'error') // Muestra un mensaje de error
+        const { flash } = useSweetAlert()
+        await flash('Máximo 2 reservas por agenda'.toUpperCase(), 'error') // Muestra un mensaje de error
         return
       }
       services.value.push(selected)
@@ -96,7 +99,7 @@ export const useAppointmentStore = defineStore('appointments', () => {
         makeToast(
           'success',
           'Reserva actualizada',
-          `${useUserStore().getUserName}, ${data.msg}`,
+          `${userStore.getUserName}, ${data.msg}`,
           lifeTime,
         )
       } catch {
@@ -111,12 +114,7 @@ export const useAppointmentStore = defineStore('appointments', () => {
       // Si no hay un ID de cita, crea una nueva cita
       try {
         const { data } = await AppointmentAPI.create(appointment)
-        makeToast(
-          'success',
-          'Reserva agendada',
-          `${useUserStore().getUserName}, ${data.msg}`,
-          lifeTime,
-        )
+        makeToast('success', 'Reserva agendada', `${userStore.getUserName}, ${data.msg}`, lifeTime)
       } catch {
         makeToast('error', 'Error en la reserva', 'Tu reserva no se ha podido procesar', lifeTime)
       }
@@ -125,7 +123,7 @@ export const useAppointmentStore = defineStore('appointments', () => {
     // Redirige al usuario después de un tiempo determinado
     setTimeout(() => {
       clearAppointmentData() // Limpia los datos de la cita
-      useUserStore().getUserAppointments() // Actualiza las citas del usuario
+      userStore.getUserAppointments() // Actualiza las citas del usuario
       router.push({ name: 'my-appointments' }) // Navega a la página de "Mis Citas"
     }, lifeTime)
   }
@@ -136,6 +134,39 @@ export const useAppointmentStore = defineStore('appointments', () => {
     date.value = new Date() // Restablece la fecha
     time.value = '' // Limpia la hora seleccionada
     appointmentById.value = '' // Limpia el ID de la cita
+  }
+
+  async function deleteAppointment(id) {
+    const { confirm } = useSweetAlert()
+    const result = await confirm({
+      title: '¿Estás seguro?',
+      text: '¿Deseas cancelar esta reserva? Esta acción no se puede deshacer.',
+      confirmButtonText: 'Sí, cancelar reserva',
+      cancelButtonText: 'Cancelar',
+    })
+    if (result.isConfirmed) {
+      try {
+        const { data } = await AppointmentAPI.delete(id)
+
+        makeToast(
+          'success',
+          'Reserva eliminada correctamente',
+          `${userStore.getUserName}, ${data.msg}`,
+          lifeTime,
+        )
+
+        userStore.userAppointments = userStore.userAppointments.filter(
+          (appointment) => appointment._id !== id,
+        )
+      } catch (error) {
+        makeToast(
+          'error',
+          'Error al eliminar reserva',
+          `${userStore.getUserName}, ${error.response.data.msg}`,
+          lifeTime,
+        )
+      }
+    }
   }
 
   // Computed property para verificar si un servicio está seleccionado
@@ -178,7 +209,7 @@ export const useAppointmentStore = defineStore('appointments', () => {
   // Computed property para deshabilitar horas ocupadas
   const disableTime = computed(() => {
     return (hour) => {
-      return appointmentsByDate.value.find((singleappointment) => singleappointment.time === hour)
+      return appointmentsByDate.value.find((singleAppointment) => singleAppointment.time === hour)
     }
   })
 
@@ -189,6 +220,7 @@ export const useAppointmentStore = defineStore('appointments', () => {
     setSelectedAppointment,
     saveAppointment,
     clearAppointmentData,
+    deleteAppointment,
     isServiceSelected,
     noServicesSelected,
     totalAmount,
