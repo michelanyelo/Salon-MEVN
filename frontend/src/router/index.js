@@ -76,6 +76,16 @@ const router = createRouter({
           name: 'login',
           component: () => import('@/views/auth/LoginView.vue'),
         },
+        {
+          path: 'restablecer-contrasena',
+          name: 'forgot-password',
+          component: () => import('@/views/auth/ForgotPasswordView.vue'),
+        },
+        {
+          path: 'restablecer-contrasena/:token',
+          name: 'reset-password',
+          component: () => import('@/views/auth/NewPasswordView.vue'),
+        },
       ],
     },
   ],
