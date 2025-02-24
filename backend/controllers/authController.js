@@ -159,6 +159,17 @@ const user = async (req, res) => {
     res.json(user)
 }
 
+const admin = async (req, res) => {
+    const {user} = req
+
+    if (!user.admin) {
+        const error = new Error('No tienes permisos para acceder a esta sección')
+        return res.status(401).json({msg: error.message})
+    }
+
+    res.json(user)
+}
+
 export {
-    register, verifyAccount, login, forgotPassword, verifyUpdatePasswordReset, updatePassword, user
+    register, verifyAccount, login, forgotPassword, verifyUpdatePasswordReset, updatePassword, user, admin
 }

@@ -1,5 +1,6 @@
 import express from "express";
 import {
+    admin,
     forgotPassword,
     login,
     register, updatePassword,
@@ -22,5 +23,6 @@ router.route('/forgot-password/:token')
 
 // rutas privadas - requiere JWT
 router.get('/user', authMiddleware, user)
+router.get('/admin', authMiddleware, admin)
 
 export default router

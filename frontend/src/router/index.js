@@ -12,6 +12,17 @@ const router = createRouter({
       component: HomeView,
     },
     {
+      path: '/admin',
+      name: 'admin',
+      component: () => import('@/views/admin/MainLayoutView.vue'),
+      meta: { requiresAdmin: true },
+      children: [{
+        path: '',
+        name: 'admin-appointments',
+        component: () => import('@/views/admin/AppointmentsView.vue'),
+      }],
+    },
+    {
       path: '/reservas',
       name: 'appointments',
       component: MainLayout,
@@ -95,8 +106,30 @@ router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.matched.some((url) => url.meta.requiresAuth)
   if (requiresAuth) {
     try {
-      await apiAuth.auth()
-      next()
+      const { data } = await apiAuth.auth()
+      if (data.admin) {
+        next({ name: 'admin' })
+      } else {
+        next()
+      }
+    } catch {
+      next({ name: 'login' })
+    }
+  } else {
+    next()
+  }
+})
+
+router.beforeEach(async (to, from, next) => {
+  const requiresAdmin = to.matched.some((url) => url.meta.requiresAdmin)
+  if (requiresAdmin) {
+    try {
+      const { data } = await apiAuth.admin()
+      if (data.admin) {
+        next()
+      } else {
+        next({ name: 'home' })
+      }
     } catch {
       next({ name: 'login' })
     }
