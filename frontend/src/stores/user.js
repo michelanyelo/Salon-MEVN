@@ -14,7 +14,6 @@ export const useUserStore = defineStore('user', () => {
     try {
       const { data } = await apiAuth.auth()
       user.value = data
-
       await getUserAppointments()
     } catch (error) {
       console.error('Error fetching user:', error)
@@ -28,15 +27,15 @@ export const useUserStore = defineStore('user', () => {
     userAppointments.value = data
   }
 
-  function logout() {
+  async function logout() {
     localStorage.removeItem('AUTH_TOKEN')
     user.value = {}
-    router.push({ name: 'login' })
+    await router.push({ name: 'login' })
   }
 
   const getUserName = computed(() => user.value?.name || '')
 
-  const noAppointments = computed(()=> userAppointments.value.length === 0)
+  const noAppointments = computed(() => userAppointments.value.length === 0)
 
   return {
     user,
